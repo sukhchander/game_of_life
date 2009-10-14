@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta name="Description" content="lolapps game of life" />
+<meta name="Keywords" content="lolapps game of life" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>LOLApps - Game of Life</title>
+</head>
+<body onload="setup();return false;">
+<div align="center">
+  <h2>Game of Life</h2>
+  <input type="button" name="next" value="Next" onclick="next();" />
+  <input type="button" name="start" value="Start" onclick="start();" />
+  <input type="button" name="stop" value="Stop" onclick="stop();" />
+  <br clear="all" />
+  <br clear="all" />	
+  <canvas id="canvas" width="641" height="481">
+    <div id="holder"></div>
+  </canvas>
+</div>
+</body>
+
+<script type="text/javascript" src="game_of_life.js"></script>
+<script type="text/javascript">
+  var canvas = document.getElementById('canvas');
+  var game = GameOfLife((canvas.width - 1) / 10, (canvas.height - 1) / 10);
+  var timer_id = 0;
+
+  function next() {
+	if (game && canvas && canvas.getContext('2d')) {
+		if (game.step()) game.draw(canvas);
+	}
+  }
+
+  function start() {
+    if (game && canvas && canvas.getContext('2d') && timer_id == 0) {
+      simulate();
+      timer_id = window.setInterval('simulate()', 200);
+    }
+  }
+
+  function stop() {
+    if (game && canvas && canvas.getContext('2d') && timer_id != 0) {
+      window.clearInterval(timer_id);
+      timer_id = 0;
+    }
+  }
+
+  function simulate() {
+	if (game.step()) {
+		game.draw(canvas)
+	} else {
+		stop();
+	}
+  }
+
+  function setup() {
+	  if (game && canvas && canvas.getContext('2d')) {
+		document.getElementById('holder').innerHTML = '';
+		simulate();
+	  }
+  }
+</script>
+
+</html>
